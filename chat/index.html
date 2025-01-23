@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="main.css" />
+    <style>
+      #subscribe {
+        white-space: pre-wrap;
+        font-family: monospace;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="formChat">
+      <input type="text" id="textField" placeholder="Type your message..." />
+      <button type="submit">Send</button>
+    </form>
+    <div id="subscribe"></div>
+    <script>
+      const form = document.getElementById("formChat");
+      const textField = document.getElementById("textField");
+      const subscribeDiv = document.getElementById("subscribe");
+
+      const ws = new WebSocket("ws://localhost:8080");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const message = textField.value;
+        if (message) {
+          ws.send(message);
+          textField.value = "";
+        }
+      });
+
+      ws.onmessage = (event) => {
+        subscribeDiv.textContent += event.data + "\n";
+      };
+    </script>
+  </body>
+</html>
