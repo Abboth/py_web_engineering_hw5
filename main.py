@@ -69,15 +69,18 @@ async def pretty_view(data):
         print(table, end="\n")
 
 
-async def main(args: list[str]):
+async def main(args):
     if len(args) < 2:
         logging.error("Please provide at least one argument -> days and optionally currency.")
         return
 
     try:
-        days = int(args[1])
+        if int(args[1]) < 10:
+            days = int(args[1])
+        else:
+            raise ValueError
     except ValueError:
-        logging.error("Invalid number of days. Please provide integer value.")
+        logging.error("Invalid number of days. Please provide integer value between 1-10.")
         return
 
     currency = args[2] if len(args) == 3 else None
@@ -104,5 +107,5 @@ if __name__ == "__main__":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     time_start = time()
     logging.basicConfig(level=logging.INFO)
-    asyncio.run(main(["213", "2", "eur"]))
+    asyncio.run(main(sys.argv))
     print(f"Execution time: {time() - time_start:.2f} seconds")
