@@ -66,7 +66,7 @@ async def pretty_view(data):
         table.field_names = ["Currency", "Sale Rate", "Purchase Rate"]
         for item in currency:
             table.add_row([item["currency"], item["saleRate"], item["purchaseRate"]])
-        return table
+        print(table, end="\n")
 
 
 async def main(args):
